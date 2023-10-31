@@ -1,4 +1,5 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
+print(os.date(), "sourced packer.lua")
 
 -- Only required if you have packer configured as `opt`
 vim.cmd [[packadd packer.nvim]]
@@ -14,17 +15,23 @@ return require('packer').startup(function(use)
 		requires = { {'nvim-lua/plenary.nvim'} }
 	}
 
-	use({
-		'rose-pine/neovim',
-		as = 'rose-pine',
-		config = function()
-			require("rose-pine").setup()
-			vim.cmd('colorscheme rose-pine')
-		end
-	})
+	-- use({
+	-- 	'rose-pine/neovim',
+	-- 	as = 'rose-pine',
+	-- 	config = function()
+	-- 		require("rose-pine").setup()
+	-- 		vim.cmd('colorscheme rose-pine')
+	-- 	end
+	-- })
+	
+	-- use('morhetz/gruvbox')
+	use('ellisonleao/gruvbox.nvim')
 
-	use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
-	use('nvim-treesitter/playground')
+	use {
+		'nvim-treesitter/nvim-treesitter',
+		tag = 'v0.9.0'
+	}
+	-- use('nvim-treesitter/playground')
 	use('tpope/vim-fugitive')
 	use('preservim/nerdtree')
 
