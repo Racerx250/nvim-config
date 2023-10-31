@@ -1,4 +1,5 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
+print(os.date(), 'sourced packer.lua')
 
 -- Only required if you have packer configured as `opt`
 vim.cmd [[packadd packer.nvim]]
@@ -23,8 +24,25 @@ return require('packer').startup(function(use)
 		end
 	})
 
-	use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
-	use('nvim-treesitter/playground')
+	use {
+		'nvim-treesitter/nvim-treesitter',
+		tag = 'v0.9.0'
+	}
+	-- use {
+	-- 	'nvim-treesitter/nvim-treesitter', 
+	-- 	tag = 'v0.9.0'
+	-- 	-- {run = ':TSUpdate'}
+	-- }
+	-- use('nvim-treesitter/playground')
+	--
+	
+	use {
+		'theprimeagen/harpoon',
+		requires = {
+			'nvim-lua/plenary.nvim'	
+		}
+	}
+
 	use('tpope/vim-fugitive')
 	use('preservim/nerdtree')
 
