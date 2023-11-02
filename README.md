@@ -1,1 +1,1 @@
-first_config: basic Primeagen setup w/ NERD Tree
+first_config: basic setup modified from Primeagen tutorial

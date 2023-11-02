@@ -4,3 +4,5 @@ vim.keymap.set('n', '<space>gf', builtin.git_files, {})
 vim.keymap.set('n', '<space>ps', function()
 	builtin.grep_string({ search = vim.fn.input("Grep > ") });
 end)
+
+
