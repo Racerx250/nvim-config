@@ -41,7 +41,7 @@ vim.keymap.set("n", "<space><space>b", function()
 	run_then_wait_background(cmd)
 end)
 
-vim.keymap.set("n", "<space><space>`", function()
+vim.keymap.set("n", "<space><space>e", function()
 	local file_path = vim.api.nvim_buf_get_name(0)
 	local cmd       = "python " .. file_path
 	run_then_exit_background(cmd)

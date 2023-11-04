@@ -16,6 +16,8 @@ function SetTheme()
 
 	if hostname == 'pop-os' then
 		set_devone_theme()
+	elseif hostname == 'DESKTOP-JOGS6KI' then
+		set_default_theme()
 	else
 		set_default_theme()
 	end
