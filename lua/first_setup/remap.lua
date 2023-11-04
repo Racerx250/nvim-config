@@ -1,3 +1,4 @@
+-- 
 vim.g.mapleader = " "
 
 -- 
@@ -11,6 +12,10 @@ end)
 vim.keymap.set("n", "<space>tb", function() 
 	vim.cmd("tabnew") 
 end)
+vim.keymap.set("n", "<space><space>n", function() 
+	vim.wo.relativenumber = not vim.wo.relativenumber
+end)
+
 
 -- 
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")

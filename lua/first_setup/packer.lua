@@ -10,22 +10,24 @@ return require('packer').startup(function(use)
 
 
 	use {
-		'nvim-telescope/telescope.nvim', tag = '0.1.1',
-		-- or                            , branch = '0.1.x',
+		'nvim-telescope/telescope.nvim',
+		tag = '0.1.1',
 		requires = { {'nvim-lua/plenary.nvim'} }
 	}
 
-	-- use({
-	-- 	'rose-pine/neovim',
-	-- 	as = 'rose-pine',
-	-- 	config = function()
-	-- 		require("rose-pine").setup()
-	-- 		vim.cmd('colorscheme rose-pine')
-	-- 	end
-	-- })
 	
-	-- 
+	-- primary theme, for desktop / other
 	use('ellisonleao/gruvbox.nvim')
+
+	-- theme for laptop
+	use {
+		'rose-pine/neovim',
+		as = 'rose-pine',
+		config = function()
+			require("rose-pine").setup()
+			vim.cmd('colorscheme rose-pine')
+		end
+	}
 	
 	--
 	use {
@@ -47,6 +49,9 @@ return require('packer').startup(function(use)
 
 	-- 
 	use('preservim/nerdtree')
+
+	-- 
+	use('voldikss/vim-floaterm')
 
 	use {
 		'VonHeikemen/lsp-zero.nvim',
