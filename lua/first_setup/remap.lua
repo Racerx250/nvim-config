@@ -15,10 +15,10 @@ end)
 vim.keymap.set("n", "<space><space>n", function() 
 	vim.wo.relativenumber = not vim.wo.relativenumber
 end)
-vim.keymap.set("n", "tr", function() 
+vim.keymap.set("n", "<space>tr", function() 
 	vim.cmd("tabm +1")
 end)
-vim.keymap.set("n", "tl", function() 
+vim.keymap.set("n", "<space>tl", function() 
 	vim.cmd("tabm -1")
 end)
 
