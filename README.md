@@ -6,3 +6,4 @@ first_config: basic setup modified from Primeagen tutorial
         4) make sure linting / lsp stuff is completely uniform: works on desktop but missing fonts elsewhere
         5) linter messages are pretty unhelpful sometimes
         6) customized formatting for python files based on my own style
+        7) write function to comment out blocks which detects the file type and act accordingly
