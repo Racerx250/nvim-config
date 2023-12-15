@@ -40,6 +40,12 @@ function is_commented(line_num)
 		return false
 	end
 
+	if file_path:endswith".tex" and line:startswith('% ') then
+		return true
+	elseif file_path:endswith".tex" then
+		return false
+	end
+
 	error('FILE TYPE NOT HANDLED ' .. file_path)
 	return false
 end
@@ -54,6 +60,8 @@ function uncomment_line(line_num)
 		new_line = old_line:sub(3,-1)
 	elseif file_path:endswith".lua" then
 		new_line = old_line:sub(4,-1)
+	elseif file_path:endswith".tex" then
+		new_line = old_line:sub(3,-1)
 	else
 		error('FILE TYPE NOT HANDLED ' .. file_path)
 	end
@@ -71,7 +79,9 @@ function comment_line(line_num)
 	if file_path:endswith".py" then
 		new_line = '# '	.. old_line
 	elseif file_path:endswith".lua" then
-		new_line = '-- '	.. old_line
+		new_line = '-- ' .. old_line
+	elseif file_path:endswith".tex" then
+		new_line = '% '	.. old_line
 	else
 		error('FILE TYPE NOT HANDLED ' .. file_path)
 	end
