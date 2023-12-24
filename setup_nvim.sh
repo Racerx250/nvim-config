@@ -14,7 +14,11 @@ download_appimage() {
 }
 
 install_fuse() {
-	sudo apt-get install fuse libfuse2
+	{
+		sudo apt-get install fuse libfuse2
+	} || {
+		sudo yum install fuse libfuse2
+	}
 }
 
 get_packer() {
