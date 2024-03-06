@@ -24,6 +24,7 @@ function reload_config()
 end
 -- vim.keymap.set('n', '<space><space>=', reload_config)
 vim.keymap.set('n', '<space>=r', function()
-	vim.cmd('so')
+	-- I don't think this is technically needed
+-- 	vim.cmd('so')
 	reload_config()
 end)
