@@ -6,7 +6,7 @@ vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
 	-- Packer can manage itself
-	use 'wbthomason/packer.nvim'
+	use('wbthomason/packer.nvim')
 
 
 	use {
@@ -28,13 +28,37 @@ return require('packer').startup(function(use)
 			vim.cmd('colorscheme rose-pine')
 		end
 	}
+
+	-- secondary themes
+	use {
+		'nordtheme/vim',
+		tag = 'v0.19.0'
+	}
+	use {
+		'sainnhe/everforest',
+		tag = 'v0.3.0'
+	}
 	
 	--
 	use {
 		'nvim-treesitter/nvim-treesitter',
 		tag = 'v0.9.0'
 	}
+
 	-- use('nvim-treesitter/playground')
+	
+	--
+	use {
+		'vim-airline/vim-airline',
+		tag = 'v0.9'
+	}
+	use('vim-airline/vim-airline-themes')
+
+
+-- 	use {
+-- 		'edkolev/tmuxline.vim',
+-- 		tag = 'v1.0'
+-- 	}
 	
 	--
 	use {
