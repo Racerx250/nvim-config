@@ -52,6 +52,14 @@ function print_table(my_table)
 	end
 end
 
+function refresh_pane() 
+	vim.cmd("edit") 
+end
+
+function print(message)
+	vim.notify(message, vim.log.levels.INFO)
+end
+
 -- 
 function string:endswith(suffix)
 	return self:sub(-#suffix) == suffix
