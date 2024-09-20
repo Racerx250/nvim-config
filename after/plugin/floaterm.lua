@@ -21,11 +21,14 @@ function run_then_wait_background(cmd)
 	vim.cmd(final_cmd)
 	print("SUBMITTED CMD:", cmd)
 end
-function run_then_exit_background(cmd)
+function run_then_exit_background_silent(cmd)
 	local final_cmd = "FloatermNew! --silent --autoclose=1 " 
 	final_cmd       = final_cmd .. cmd
 	final_cmd       = final_cmd .. "; exit"
 	vim.cmd(final_cmd)
+end
+function run_then_exit_background(cmd)
+	run_then_exit_background_silent(cmd)
 	print("SUBMITTED CMD:", cmd)
 end
 

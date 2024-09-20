@@ -7,3 +7,4 @@ first_config: basic setup modified from Primeagen tutorial
         5) linter messages are pretty unhelpful sometimes
         6) customized formatting for python files based on my own style
         7) write function to comment out blocks which detects the file type and act accordingly
+        8) python print lines annotation (turning "print(len(something))" into "print('len(something)', len(something)" via keymap

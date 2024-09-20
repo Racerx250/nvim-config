@@ -33,7 +33,7 @@ function change_to_insert_mode()
 	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("i", true, false, true), 'x!', true)
 end
 
--- 
+-- things that should be in lua natively but lol
 function print_table(my_table) 
 
 	--
@@ -67,5 +67,49 @@ end
 
 function string:startswith(prefix)
 	return self:sub(0, #prefix) == prefix
+end
+
+function string:split(pat)
+	-- holy shit lua is dumb, but I do appreicate its minimalistic approach
+	local t = {}  -- NOTE: use {n = 0} in Lua-5.0
+	local fpat = "(.-)" .. pat
+	local last_end = 1
+	local s, e, cap = self:find(fpat, 1)
+
+	-- 
+	while s do
+		if s ~= 1 or cap ~= "" then
+			table.insert(t, cap)
+		end
+		last_end = e+1
+		s, e, cap = self:find(fpat, last_end)
+	end
+
+	-- 
+	if last_end <= #self then
+		cap = self:sub(last_end)
+		table.insert(t, cap)
+	end
+
+	return t
+end
+
+function string:rstrip(sep)
+	local split_str = self:split(sep)
+	local final_str = split_str[1]
+
+	for i = 2,#split_str-1 do
+		final_str = final_str .. sep .. split_str[i]
+	end
+
+	return final_str
+end
+
+-- debug functions
+function print_table(my_table)
+	print('printing table')
+	for i,v in ipairs(my_table) do
+		print(i, v)
+	end
 end
 
