@@ -96,3 +96,4 @@ vim.keymap.set("n", "<space>f2", function()
 
 	run_then_wait(cmd_2)
 end)
+

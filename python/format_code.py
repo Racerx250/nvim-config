@@ -6,7 +6,7 @@ from typing import List
 from rich import print
 
 def module_to_comments_newlines(f: ast.Module) -> str:
-    print(f)
+#     print(f)
     function_tokens   = [t for t in tokens if start_line <= t.start[0] <= end_line or start_line <= t.end[0] <= end_line]
     comments_newlines = [
         t 
@@ -72,15 +72,97 @@ def import_to_codestr(f: ast.Module) -> str:
 def importfrom_to_codestr(f: ast.Module) -> str:
     return astunparse.unparse(f).strip()
 
+def subscript_to_typestr(annotation: ast.Subscript) -> str:
+    # 
+    if not isinstance(annotation, ast.Subscript):
+        raise TypeError(type(annotation))
+    
+    # 
+    if isinstance(annotation.slice, ast.Name):
+        outer = annotation.value.id
+        inner = annotation.slice.id
+        return f"{outer}[{inner}]"
+
+    # 
+    if isinstance(annotation.slice, ast.Tuple):
+        print('in tuple')
+        outer = annotation.value.id
+        inner = ', '.join([
+            arg_to_typestr(elem)
+            for elem in annotation.slice.elts
+        ]) 
+#         for elem in annotation.slice.elts:
+#             print('asdfasdfasdf', arg_to_typestr(elem))
+#         complete = outer + "[" + inner + "]"
+        complete = f"{outer}[{inner}]"
+        print('all args', outer, inner, complete)
+        return complete
+
+    raise NotImplementedError(type(annotation.slice)) 
+
+def arg_to_typestr(f: ast.arg) -> str:
+
+    if not isinstance(f, (ast.arg, ast.Constant, ast.Subscript, ast.Call)):
+        raise TypeError(type(f))
+
+    if isinstance(f, ast.Subscript):
+        return subscript_to_typestr(f)
+    
+    if isinstance(f, ast.Constant) and f.value == None:
+#         print('found None as a constant')
+        return 'None'
+    if isinstance(f, ast.Call):
+#         print('found call', astunparse.unparse(f))
+        return astunparse.unparse(f).strip()
+    if isinstance(f.annotation, type(None)):
+#         print('found None annotation')
+        return 'type'
+    if isinstance(f.annotation, ast.Name):
+        out = f.annotation.id
+#         print('name', out)
+        return out
+    if isinstance(f.annotation, ast.Subscript):
+#         print(dir(annotation))
+#         print(annotation.value)
+#         print(annotation.value.id)
+#         print('slice', annotation.slice)
+        print('unparsing subscript', astunparse.unparse(f.annotation.slice))
+#         print('dir tuple', dir(annotation.slice))
+#         print('elements', annotation.slice.elts)
+#         print('unparse first element', astunparse.unparse(annotation.slice.elts[0]))
+#         print('first element', annotation.slice.elts[0])
+#         print('first element value', annotation.slice.elts[0].value)
+#         print('first element value id', annotation.slice.elts[0].value.id)
+#         print('first element slice', annotation.slice.elts[0].slice)
+#         print('first element slice id', annotation.slice.elts[0].slice.id)
+#         print('subscript parse', subscript_to_typestr(f))
+         
+        out = subscript_to_typestr(f.annotation)
+        return out
+#         return f.annotation.id
+
+    raise NotImplementedError(type(f.annotation))
+
 def function_to_argsstr(f: ast.Module) -> str:
     # 
     num_posargs = len(f.args.args) - len(f.args.defaults)
     num_kwargs  = len(f.args.defaults)
-    posargs     = [f.args.args[i] for i in range(num_posargs)]
+#     posargs     = [f.args.args[i] for i in range(num_posargs)]
+
+    # 
+    posargs     = [
+        {
+            'def'    : f.args.args[i],
+            'default': None,
+            'type'   : arg_to_typestr(f.args.args[i])
+        } 
+        for i in range(num_posargs)
+    ]
     kwargs      = [
         {
             'def'    : f.args.args[num_posargs + i],
-            'default': f.args.defaults[i]
+            'default': f.args.defaults[i],
+            'type'   : arg_to_typestr(f.args.args[num_posargs + i])
         }
         for i in range(num_kwargs)
     ]
@@ -91,36 +173,27 @@ def function_to_argsstr(f: ast.Module) -> str:
     
     #
     if len(posargs) + len(kwargs) > 1:
-#         print(dir(posargs[0]))
-#         print(dir(posargs[0].arg))
-#         print(posargs[0].arg)
-#         print(posargs[0].annotation)
-#         print(dir(posargs[0].annotation))
-#         print(posargs[0].annotation.id)
-#         print(posargs[0].annotation)
-#         print(dir(posargs[0].annotation))
-#         print('max_name_len', max_name_len)
 
         # 
-        max_name_len       = max([len(arg.arg) for arg in posargs] + [len(kwarg['def'].arg) for kwarg in kwargs])
+        max_name_len       = max([len(argstruct['def'].arg) for argstruct in posargs] + [len(kwarg['def'].arg) for kwarg in kwargs])
         max_annotation_len = max(
             [
-                len(arg.annotation.id) 
-                for arg in posargs
-                if arg.annotation != None
+                len(posarg['type']) 
+                for posarg in posargs
             ] + [
-                len(kwarg['def'].annotation.id) 
+                len(kwarg['type']) 
                 for kwarg in kwargs
-                if kwarg['def'].annotation != None
             ] + [0]
         )
-#         print('max_annotation_len', max_annotation_len)
         
         # 
         arglines = []
 
         # 
-        for i, arg in enumerate(posargs):
+        for i, argstruct in enumerate(posargs):
+            #
+            arg = argstruct['def']
+
             # 
             argstr = arg.arg
             argstr += ' '*(max_name_len - len(arg.arg))
@@ -128,6 +201,8 @@ def function_to_argsstr(f: ast.Module) -> str:
             # 
             if arg.annotation != None:
                 argstr += f': {arg.annotation.id}'
+            else:
+                argstr += ': type'
 
             #
             arglines.append(argstr)
@@ -140,11 +215,13 @@ def function_to_argsstr(f: ast.Module) -> str:
             argstr += ' '*(max_name_len - len(kwarg['def'].arg))
     
             # 
-            if kwarg["def"].annotation != None:
+            if kwarg["type"] != None:
                 # ta = type annotation
-                ta = kwarg["def"].annotation.id
+                ta = kwarg["type"]
                 argstr += f': {ta}' + ' '*(max_annotation_len - len(ta))
             else:
+#                 argstr += ": type"
+#                 argstr += ' '*(2 + max_annotation_len - 6)
                 argstr += ' '*(2 + max_annotation_len)
 
             #
@@ -213,6 +290,8 @@ def function_to_codestr(f: ast.Module, tokens: List[dict]) -> str:
     #
     if f.returns != None:
         codestr += f' -> {astunparse.unparse(f.returns).strip()}'
+    else:
+        codestr += f' -> type'
 
     #
     codestr += ':'
@@ -379,12 +458,22 @@ def main_to_codestr(f: ast.Module) -> str:
 def tbody_to_codestr(tbody: dict, tokens: List[dict]) -> str:
     # 
     codestr  = ''
-    codestr += '\n'.join([import_to_codestr(f) for f in tbody['import']])
-    codestr += '\n'
-    codestr += '\n'.join([importfrom_to_codestr(f) for f in tbody['import_from']])
-    codestr += '\n\n'
-    codestr += '\n\n'.join([function_to_codestr(f, tokens) for f in tbody['function']])
-    codestr += '\n\n'
+
+    if len(tbody['import']) != 0:
+        codestr += '\n'.join([import_to_codestr(f) for f in tbody['import']])
+        codestr += '\n'
+
+    if len(tbody['import_from']) != 0:
+        codestr += '\n'.join([importfrom_to_codestr(f) for f in tbody['import_from']])
+        codestr += '\n'
+
+    if len(tbody['import']) != 0 or len(tbody['import_from']) != 0:
+        codestr += '\n'
+
+    if len(tbody['import_from']) != 0:
+        codestr += '\n\n'.join([function_to_codestr(f, tokens) for f in tbody['function']])
+        codestr += '\n\n'
+
     codestr += '\n'.join([main_to_codestr(f) for f in tbody['main']])
 
     return codestr
