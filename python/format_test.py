@@ -4,6 +4,12 @@ import argparse
 
 # out comment
 
+def empty_test():
+    return "hi"
+
+def single_kwarg(arg1 = 'asdf'):
+    return "hi"
+
 def wow5(arg1: str):
     temp = 1
     temp1 = 300
@@ -31,7 +37,7 @@ if __name__ == "__main__":
 def wow(arg11111: str, arg2: dict) -> float:
     # asdf
     temp = 1
-    temp1 = 300
+    temp1 = 300 # inline comment
 
     for i in range(3):
         print(i)

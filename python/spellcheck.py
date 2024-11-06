@@ -7,10 +7,12 @@ from os import remove
 from os.path import join
 
 sys.path.append("/home/llawrence/misc-python-utils/")
+sys.path.append("/home/lclawrence_umass_edu/misc-python-utils/")
 from write_str_to_fpath import write_str_to_fpath
 from fpath_to_str import fpath_to_str
 from query_gpt import get_chat_completion
 from submit_cmd import submit_cmd
+from write_str_to_fpath_w_diff import write_str_to_fpath_w_diff
 
 # 
 update_cache = False
@@ -84,22 +86,25 @@ def fpath_to_spellcheck_diff(fpath: str) -> None:
     for v in correction_list:
         fstr_list[v['line_number']] = v['correction']
     fstr = '\n'.join(fstr_list)
-
-    # 
-    tmp_fname = join('/tmp', f"spellcheck-{secrets.token_hex(8)}.txt")
-    write_str_to_fpath(fstr, tmp_fname)
     
-    # 
-    cmd = f"touch /tmp/empty && git merge-file -L {fpath} -L B -L {tmp_fname} -p {fpath} /tmp/empty {tmp_fname}"
-    out = submit_cmd(cmd, return_output=True)
-    out = '\n'.join(out)
-    out = out.replace(tmp_fname, 'gpt rewrite')
-    
-    # 
-    remove(tmp_fname)
-
     #
-    write_str_to_fpath(out, fpath)
+    write_str_to_fpath_w_diff(fstr, fpath, diff_name='gpt-rewrite')
+
+    # 
+#     tmp_fname = join('/tmp', f"spellcheck-{secrets.token_hex(8)}.txt")
+#     write_str_to_fpath(fstr, tmp_fname)
+#     
+#     # 
+#     cmd = f"touch /tmp/empty && git merge-file -L {fpath} -L B -L {tmp_fname} -p {fpath} /tmp/empty {tmp_fname}"
+#     out = submit_cmd(cmd, return_output=True)
+#     out = '\n'.join(out)
+#     out = out.replace(tmp_fname, 'gpt rewrite')
+#     
+#     # 
+#     remove(tmp_fname)
+# 
+#     #
+#     write_str_to_fpath(out, fpath)
 
 def parse_args():
     parser = argparse.ArgumentParser()

@@ -166,10 +166,26 @@ def function_to_argsstr(f: ast.Module) -> str:
         }
         for i in range(num_kwargs)
     ]
+
+    # 
+    if len(posargs) == 0 and len(kwargs) == 0:
+        return "()"
     
     # 
     if len(posargs) == 1 and len(kwargs) == 0:
-        return f"({ast.unparse(posargs[0])})"
+        argname = posargs[0]['def'].arg
+        argtype = posargs[0]['type']
+        argstr  = f"{argname}: {argtype}"
+        return f"({argstr})"
+
+    # 
+    if len(posargs) == 0 and len(kwargs) == 1:
+        argname    = kwargs[0]['def'].arg
+        argtype    = kwargs[0]['type']
+        argdefault = astunparse.unparse(kwargs[0]["default"]).strip()
+        print(argdefault)
+        argstr  = f"{argname}: {argtype} = {argdefault}"
+        return f"({argstr})"
     
     #
     if len(posargs) + len(kwargs) > 1:
@@ -234,16 +250,16 @@ def function_to_argsstr(f: ast.Module) -> str:
         arglines = [f"{join_str}{argstr}" for argstr in arglines]
         return '(' + ','.join(arglines) + '\n\t)'
 
-    print(dir(f))
-    print(f.lineno)
-    print(f.name)
-    print([
-        {
-            'start': b.lineno,
-            'end': b.end_lineno,
-        }
-        for b in f.body
-    ])
+#     print(dir(f))
+#     print(f.lineno)
+#     print(f.name)
+#     print([
+#         {
+#             'start': b.lineno,
+#             'end': b.end_lineno,
+#         }
+#         for b in f.body
+#     ])
     raise NotImplementedError(posargs, kwargs)
 
 def function_to_codestr(f: ast.Module, tokens: List[dict]) -> str:
@@ -275,13 +291,13 @@ def function_to_codestr(f: ast.Module, tokens: List[dict]) -> str:
     ]
 
     # 
-    inline_comments = [
-        t 
-        for t in function_tokens 
-        if t.type == 61 and t.string.strip() != t.line.strip()
-    ] 
-    if len(inline_comments) != 0:
-        raise NotImplementedError()
+#     inline_comments = [
+#         t 
+#         for t in function_tokens 
+#         if t.type == 61 and t.string.strip() != t.line.strip()
+#     ] 
+#     if len(inline_comments) != 0:
+#         raise NotImplementedError(inline_comments)
 
     # 
     codestr  = f'def {f.name}'
@@ -470,7 +486,7 @@ def tbody_to_codestr(tbody: dict, tokens: List[dict]) -> str:
     if len(tbody['import']) != 0 or len(tbody['import_from']) != 0:
         codestr += '\n'
 
-    if len(tbody['import_from']) != 0:
+    if len(tbody['function']) != 0:
         codestr += '\n\n'.join([function_to_codestr(f, tokens) for f in tbody['function']])
         codestr += '\n\n'
 
