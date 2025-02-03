@@ -60,6 +60,23 @@ function print(message)
 	vim.notify(message, vim.log.levels.INFO)
 end
 
+function get_v_lines()
+	local mode = vim.fn.mode()
+	if mode == 'v' or mode == 'V' or mode == '\22' then
+		-- Get the visual selection start and end positions
+		local start_pos = vim.fn.getpos("v")
+		local end_pos = vim.fn.getpos(".")
+		local start_line = start_pos[2]
+		local end_line = end_pos[2]
+		-- Determine the minimum and maximum line numbers
+		local min_line = math.min(start_line, end_line)
+		local max_line = math.max(start_line, end_line)
+		return min_line, max_line
+	else
+		return nil
+	end
+end
+
 -- 
 function string:endswith(suffix)
 	return self:sub(-#suffix) == suffix

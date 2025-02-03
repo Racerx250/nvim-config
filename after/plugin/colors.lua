@@ -29,19 +29,21 @@ function set_devone_theme()
 end
 
 function SetTheme()
+	--
 	local hostname = vim.fn.hostname()
-
+	local username = vim.fn.system({'whoami'})
+	
+	--
 	if hostname == 'pop-os' then
 		set_devone_theme()
 	elseif hostname == 'DESKTOP-JOGS6KI' then
 		set_default_theme()
--- 		set_everforest_theme_1()
+	elseif username == 'lclawrence_umass_edu' then
+		set_devone_theme()
 	else
-		set_default_theme()
+		set_devone_theme()
+-- 		set_default_theme()
 	end
-
-
-
 end
 
 SetTheme()

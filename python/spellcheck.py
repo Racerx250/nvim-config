@@ -34,7 +34,7 @@ Here is a text file containing some text. Propose spellchecks and grammar edits 
 
 {fstr}
 
-For each proposed edit indicate the line number and the correction you wish to make. Do include lines which don't need correction. The line number is already indicated within the file. Do not include a correction with an empty line which is the last line of the file, namely don't include "{{\'line_number\': {num_lines - 1}, \'correction\': \'\'}}. PLEASE DO NOT INCLUDE LINES WITH NO CORRECTION, JUST LEAVE ABSENT FROM THE RESPONSE.".
+For each proposed edit indicate the line number and the correction you wish to make. Do include lines which don't need correction. The line number is already indicated within the file. Do not include a correction with an empty line which is the last line of the file, namely don't include "{{\'line_number\': {num_lines - 1}, \'correction\': \'\'}}. PLEASE DO NOT INCLUDE LINES WITH NO CORRECTION, JUST LEAVE ABSENT FROM THE RESPONSE. DO NOT INCLUDE EXPLANATIONS, JUST UT THE REWRITE".
     '''
     json_schema = {
       "name"  : "response",

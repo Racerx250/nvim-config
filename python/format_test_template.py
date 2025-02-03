@@ -2,6 +2,14 @@ from typing import List
 import torch
 import argparse
 
+# out comment
+
+def empty_test():
+    return "hi"
+
+def single_kwarg(arg1 = 'asdf'):
+    return "hi"
+
 def wow5(arg1: str):
     temp = 1
     temp1 = 300
@@ -24,12 +32,12 @@ def wow6(arg1) -> float:
     return None
 
 if __name__ == "__main__":
-    print('asdf')
+    print('asdfhmmm')
 
 def wow(arg11111: str, arg2: dict) -> float:
     # asdf
     temp = 1
-    temp1 = 300
+    temp1 = 300 # inline comment
 
     for i in range(3):
         print(i)
@@ -43,4 +51,15 @@ def wow3(
         arg1: str, arg2: dict, 
         kwarg1: str = '', kwargs2: float = 0
     ) -> float:
+    return None
+
+def wow4(
+        arg1: str, arg2: dict, 
+        asdf
+    ) -> float:
+    ''''''
+    return None
+
+def wow7(*args, **kwargs) -> float:
+    ''''''
     return None
