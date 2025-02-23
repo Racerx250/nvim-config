@@ -43,6 +43,6 @@ vim.cmd('command AutoCmpOff lua setAutoCmp(false)')
 vim.cmd('command ToggleAutoCmp lua toggleAutoCmp()')
 
 --
-vim.keymap.set("n", "<space>ac", function() 
+vim.keymap.set("n", "<space>tc", function() 
 	vim.cmd("ToggleAutoCmp")
 end)

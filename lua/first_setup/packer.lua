@@ -1,4 +1,7 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
+-- steps:
+-- 1) :so
+-- 2) PackerSync
 print(os.date(), 'sourced packer.lua')
 
 -- Only required if you have packer configured as `opt`

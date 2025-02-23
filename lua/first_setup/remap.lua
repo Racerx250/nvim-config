@@ -24,6 +24,9 @@ end)
 vim.keymap.set("n", "<space>wr", function() 
 	vim.cmd("windo e")
 end)
+vim.keymap.set("n", "<space>qr", function() 
+	vim.cmd(".+1,$tabdo :tabc")
+end)
 -- vim.keymap.set("n", "<space>=r", function() 
 -- 	local nvim_config_dir = '~/.config/nvim'
 -- 	local init_lua_path   = nvim_config_dir .. '/init.lua'
