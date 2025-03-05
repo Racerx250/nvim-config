@@ -13,6 +13,13 @@ function run_then_wait(cmd)
 	final_cmd       = final_cmd .. "; exit"
 	vim.cmd(final_cmd)
 end
+function run_then_exit_right(cmd)
+	local final_cmd = ":FloatermNew! --height=1.0 --width=0.5 --wintype=float --position=right --autoclose=2 " 
+	final_cmd       = final_cmd .. cmd
+	final_cmd       = final_cmd .. "; read -n 1 -s -r -p \"Press any key to continue\""
+	final_cmd       = final_cmd .. "; exit"
+	vim.cmd(final_cmd)
+end
 function run_then_wait_background(cmd)
 	local final_cmd = "FloatermNew! --silent --autoclose=0 " 
 	final_cmd       = final_cmd .. cmd
@@ -31,6 +38,7 @@ function run_then_exit_background(cmd)
 	run_then_exit_background_silent(cmd)
 	print("SUBMITTED CMD:", cmd)
 end
+
 
 vim.keymap.set("n", "<space><space>f", function()
 	local file_path = vim.api.nvim_buf_get_name(0)
@@ -97,3 +105,8 @@ vim.keymap.set("n", "<space>f2", function()
 	run_then_wait(cmd_2)
 end)
 
+vim.keymap.set("n", "<space><space>c", function()
+	local file_path = vim.api.nvim_buf_get_name(0)
+	local cmd       = 'python -c "import sys; from aic_edit_using_inline_comments import aic_edit_using_inline_comments; aic_edit_using_inline_comments(sys.argv[1])" "' .. file_path .. '"'
+	run_then_exit_right(cmd)
+end)
