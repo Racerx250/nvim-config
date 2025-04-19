@@ -7,7 +7,8 @@ help() {
 download_appimage() {
 	set -eu
 	nvim="$HOME/.local/bin/nvim"
-	nvimurl="https://github.com/neovim/neovim/releases/download/v0.9.0/nvim.appimage"
+	# nvimurl="https://github.com/neovim/neovim/releases/download/v0.9.0/nvim.appimage"
+	nvimurl="https://github.com/neovim/neovim/releases/download/v0.10.1/nvim.appimage"
 	mkdir -p "$(dirname "$nvim")"
 	curl -fL "$nvimurl" -o "$nvim" -z "$nvim"
 	chmod u+x "$nvim"
@@ -25,6 +26,10 @@ get_packer() {
 	cd /tmp
 	git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim/
 }
+
+if [[ $1 == 'download_appimage' ]]; then
+	download_appimage
+fi
 
 if [[ $1 == 'all' ]]; then
 	download_appimage
