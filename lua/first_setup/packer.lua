@@ -18,6 +18,7 @@ return require('packer').startup(function(use)
 		requires = { {'nvim-lua/plenary.nvim'} }
 	}
 
+	use('mfussenegger/nvim-lint')
 	
 	-- primary theme, for desktop / other
 	use('ellisonleao/gruvbox.nvim')
