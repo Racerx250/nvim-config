@@ -3,8 +3,12 @@ vim.keymap.set("n", "<space>fc", function()
 
 	if file_path:endswith".py" then
 -- 		vim.cmd("!python ~/.config/nvim/python/format_code.py --file_path %") 
--- 		vim.cmd("!python ~/.config/nvim/python/format_py_func_signatures.py --file_path %") 
 		vim.cmd("!python $MISC_UTILS_DIR/format_pyfpath_signatures.py --file_path %") 
+-- 		vim.cmd("!black %") 
+-- 		vim.cmd("!yapf -i %") 
+-- 		vim.cmd("!yapf -i --style $MISC_UTILS_DIR/bash_scripts/style.yapf %") 
+-- 		vim.cmd("!yapf -i --style $MISC_UTILS_DIR/bash_scripts/style.yapf %; python $MISC_UTILS_DIR/format_pyfpath_signatures.py --file_path %") 
+-- 		vim.cmd("!black %; python $MISC_UTILS_DIR/format_pyfpath_signatures.py --file_path %") 
 		refresh_pane()
 		return 
 	end

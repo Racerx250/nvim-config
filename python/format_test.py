@@ -4,22 +4,13 @@ import argparse
 
 # out comment
 
-# https://docs.python.org/3/library/ast.html
-# how tf does this work
-# def f(a: 'annotation', b=1, c=2, *d, e, f=3, **g):
-#     pass
-
 def empty_test():
     return "hi"
-
-def wow7(*args, **kwargs) -> float:
-    ''''''
-    return None
 
 def single_kwarg(arg1 = 'asdf'):
     return "hi"
 
-def wow5(arg1: str):
+def wow5(arg1):
     temp = 1
     temp1 = 300
     temp2 = 300
@@ -65,7 +56,10 @@ def wow3(
 def wow4(
         arg1: str, arg2: dict, 
         asdf
-    ) -> float:
+    ):
     ''''''
     return None
 
+def wow7(*args, **kwargs) -> float:
+    ''''''
+    return None

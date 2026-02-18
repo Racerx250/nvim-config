@@ -10,7 +10,7 @@ def empty_test():
 def single_kwarg(arg1 = 'asdf'):
     return "hi"
 
-def wow5(arg1: str):
+def wow5(arg1):
     temp = 1
     temp1 = 300
     temp2 = 300
@@ -56,7 +56,7 @@ def wow3(
 def wow4(
         arg1: str, arg2: dict, 
         asdf
-    ) -> float:
+    ):
     ''''''
     return None
 
