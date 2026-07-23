@@ -6,6 +6,7 @@ help() {
 
 download_appimage() {
 	set -eu
+	# set +e
 	nvim="$HOME/.local/bin/nvim"
 	# nvimurl="https://github.com/neovim/neovim/releases/download/v0.9.0/nvim.appimage"
 	nvimurl="https://github.com/neovim/neovim/releases/download/v0.10.1/nvim.appimage"
